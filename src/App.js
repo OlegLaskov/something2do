@@ -1,25 +1,28 @@
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import {CssBaseline, Container, Typography} from '@mui/material';
+import Login from './components/Login';
+import HomePage from './components/HomePage';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('somthing2doUser') || null));
+
+	const onLogin = (user)=>{
+		setUser(user);
+		localStorage.setItem('somthing2doUser', JSON.stringify(user));
+	}
+
+	const homePage = user ? <HomePage user={user} /> : null;
+	
+	return (
+		<div className="App">
+			<CssBaseline />
+			<Container maxWidth="sm">
+				<Typography variant="h3" gutterBottom component="div" className='header'>Something To Do</Typography>
+				<Login open={!Boolean(user)} onLogin={onLogin} />
+				{homePage}
+			</Container>
+		</div>
+	);
 }
-
-export default App;
